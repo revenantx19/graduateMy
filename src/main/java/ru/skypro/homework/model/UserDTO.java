@@ -1,16 +1,19 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import ru.skypro.homework.dto.Role;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Data
+@Entity
 @Table(name = "app_user")
-public class User {
+public class UserDTO {
     @Schema(description = "id пользователя")
+    @Id
     private Integer id;
 
     @Schema(description = "логин пользователя")

@@ -1,7 +1,6 @@
 package ru.skypro.homework.controller;
 
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,9 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.Login;
+import ru.skypro.homework.model.LoginDTO;
 import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.service.AuthService;
 
 @Slf4j
@@ -29,7 +27,7 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> login(@RequestBody Login login) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO login) {
         log.info("Вошли в метод login");
         if (authService.login(login.getUsername(), login.getPassword())) {
             log.info("Успешная авторизация");

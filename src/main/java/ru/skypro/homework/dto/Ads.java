@@ -10,7 +10,6 @@ public class Ads {
     @Schema(description = "общее количество объявлений")
     private Integer count;
 
-    @Schema(description = "автор объявлений")
     private Ad ad;
 
 }

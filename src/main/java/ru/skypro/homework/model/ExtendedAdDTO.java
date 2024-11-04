@@ -1,4 +1,4 @@
-package ru.skypro.homework.dto;
+package ru.skypro.homework.model;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Data
-public class ExtendedAd {
+@Entity
+public class ExtendedAdDTO {
 
+    @Id
     @Schema(description = "id объявления")
     private Integer pk;
 
