@@ -13,7 +13,7 @@ public class ExtendedAd {
     @Schema(description = "id объявления")
     private Integer pk;
 
-    @Schema(description = "имя авто объявления")
+    @Schema(description = "имя автора объявления")
     private String authorFirstName;
 
     @Schema(description = "фамилия автора объявления")

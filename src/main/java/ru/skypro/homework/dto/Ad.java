@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Data
-@Entity
 public class Ad {
 
     @Schema(description = "id автора объявления")
@@ -18,7 +17,6 @@ public class Ad {
     private String image;
 
     @Schema(description = "id объявления")
-    @Id
     private Integer id;
 
     @Schema(description = "цена объявления")

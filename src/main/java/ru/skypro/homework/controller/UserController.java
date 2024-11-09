@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.model.UserDTO;
+import ru.skypro.homework.dto.User;
+import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.service.impl.UserMapperServiceImpl;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
@@ -23,6 +26,9 @@ import ru.skypro.homework.model.UserDTO;
 @Tag(name = "Пользователи")
 @RequiredArgsConstructor
 public class UserController {
+
+    private final UserMapper userMapper;
+    private final UserMapperServiceImpl userMapperServiceImpl;
 
     @Operation(summary = "Обновление пароля")
     @PostMapping(path = "/users/set_password")
@@ -44,17 +50,14 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDTO.class))
+                            schema = @Schema(implementation = UserEntity.class))
             }),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> getUser() {
+    public ResponseEntity<User> getUser() {
         log.info("Вы вошли в метод getInfoAboutCurrentUser");
-        if (true) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        User user = userMapperServiceImpl.getUserDto();
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @Operation(summary = "Обновление информации об авторизованном пользователе")
