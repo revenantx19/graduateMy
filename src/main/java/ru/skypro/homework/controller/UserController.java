@@ -18,7 +18,7 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.UserEntity;
-import ru.skypro.homework.service.impl.UserMapperServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
@@ -28,7 +28,7 @@ import ru.skypro.homework.service.impl.UserMapperServiceImpl;
 public class UserController {
 
     private final UserMapper userMapper;
-    private final UserMapperServiceImpl userMapperServiceImpl;
+    private final UserServiceImpl userMapperServiceImpl;
 
     @Operation(summary = "Обновление пароля")
     @PostMapping(path = "/users/set_password")
@@ -38,7 +38,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
     })
     public ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword newPassword) {
-        log.info("Вы вошли в метод setPassword");
+        log.info("Метод setPassword, класса UserController. Принят объект newPassword: " + newPassword.toString());
         if (newPassword != null) {
             return ResponseEntity.ok().build();
         } else {
@@ -55,7 +55,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<User> getUser() {
-        log.info("Вы вошли в метод getInfoAboutCurrentUser");
+        log.info("Метод getUser, класса UserController.");
         User user = userMapperServiceImpl.getUserDto();
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -70,7 +70,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> updateUser(@RequestBody UpdateUser updateUser) {
-        log.info("Вы вошли в метод setInfoAboutAuthorizationUser");
+        log.info("Метод updateUser, класса UserController. Принят объект updateUser: " + updateUser.toString());
         return ResponseEntity.ok().build();
 
     }
@@ -82,7 +82,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> updateUserImage(@RequestPart(value = "image", required = true) MultipartFile image) {
-        log.info("Вы вошли в метод uploadImageForCurrentUser");
+        log.info("Метод uploadUserImage, класса UserController. Принят файл image: " + image.toString());
         return ResponseEntity.ok().build();
 
     }

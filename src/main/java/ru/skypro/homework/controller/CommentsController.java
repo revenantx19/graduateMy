@@ -29,7 +29,7 @@ public class CommentsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> getComments(@PathVariable("id") int id) {
-        log.info("Вы вошли в метод getCommentsAds");
+        log.info("Метод getComments, класса CommentsController. Принято id: " + id);
         return ResponseEntity.ok().build();
     }
 
@@ -46,7 +46,7 @@ public class CommentsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> addComment(@PathVariable("id") int id) {
-        log.info("Вы вошли в метод addCommentsAds");
+        log.info("Метод addComments, класса CommentsController. Принято (int) id: " + id);
         return ResponseEntity.ok().build();
     }
 
@@ -62,7 +62,9 @@ public class CommentsController {
     })
     public ResponseEntity<?> deleteComment(@PathVariable("adId") int adId,
                                            @PathVariable("commentId") int commentId) {
-        log.info("Вы вошли в метод deleteCommentsAds");
+        log.info("Метод deleteCommentsAds, класса CommentsController." +
+                "Приняты (int) adId: " + adId +
+                ", (int) commentId: " + commentId );
         return ResponseEntity.ok().build();
     }
 
@@ -82,7 +84,10 @@ public class CommentsController {
     public ResponseEntity<?> updateComment(@PathVariable("adId") int adId,
                                            @PathVariable("commentId") int commentId,
                                            @RequestBody CreateOrUpdateComment createOrUpdateComment) {
-        log.info("Вы вошли в метод updateCommentsAds");
+        log.info("Метод updateComment, класса CommentsController." +
+                "Приняты (int) adId: " + adId +
+                ", (int) commentId: " + commentId +
+                ", (object) createOrUpdateComment: " + createOrUpdateComment);
         return ResponseEntity.ok().build();
     }
 }

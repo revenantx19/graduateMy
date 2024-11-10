@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Login;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.service.AuthService;
-import ru.skypro.homework.service.impl.UserMapperServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -22,7 +22,7 @@ import ru.skypro.homework.service.impl.UserMapperServiceImpl;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserMapperServiceImpl userMapperService;
+    private final UserServiceImpl userMapperService;
 
     @PostMapping("/login")
     @ApiResponses(value = {
@@ -30,7 +30,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> login(@RequestBody Login login) {
-        log.info("Вошли в метод login");
+        log.info("Метод login, класса AuthController. Принят объект login: \n" + login.toString());
         if (authService.login(login.getUsername(), login.getPassword())) {
             log.info("Успешная авторизация");
             return ResponseEntity.ok().build();
@@ -46,6 +46,7 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> register(@RequestBody Register register) {
+        log.info("Метод register, класса AuthController. Принят объект register: \n" + register.toString());
         if (authService.register(register)) {
             userMapperService.saveUserEntity(register);
             return ResponseEntity.status(HttpStatus.CREATED).build();

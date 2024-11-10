@@ -13,12 +13,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.model.AdEntity;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
 @Slf4j
 @Tag(name = "Объявления")
 public class AdController {
+
+    private final AdServiceImpl adServiceImpl;
+
+    public AdController(AdServiceImpl adServiceImpl) {
+        this.adServiceImpl = adServiceImpl;
+    }
 
     @Operation(summary = "Получение всех объявлений", tags = {"Объявления"})
     @GetMapping(path = "/ads")
@@ -29,7 +36,7 @@ public class AdController {
             }),
     })
     public ResponseEntity<?> getAllAds() {
-        log.info("Вы вошли в метод getAds");
+        log.info("Метод getAllAds, класса AdController");
         return ResponseEntity.ok().build();
     }
 
@@ -44,7 +51,10 @@ public class AdController {
     })
     public ResponseEntity<?> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
                                    @RequestPart(value = "image", required = true) MultipartFile image) {
-        log.info("Вы вошли в метод addAds");
+        log.info("Метод addAds, класса AdController. Приняты: \n" +
+                "Новое объявление или обновление имеющегося " + properties.toString() +
+                "\nИзображение объявления" + image.getOriginalFilename());
+        adServiceImpl.addAd(properties);
         return ResponseEntity.ok().build();
     }
 
@@ -58,8 +68,9 @@ public class AdController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> getAds(@PathVariable int id) {
-        log.info("Вы вошли в метод getAdsById");
+    public ResponseEntity<?> getAdsById(@PathVariable int id) {
+        log.info("Метод getAdsById, класса AdController. Принят: \n" +
+                "(int) id " + id);
         return ResponseEntity.ok().build();
     }
 
@@ -71,8 +82,9 @@ public class AdController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> removeAd(@PathVariable("id") int id) {
-        log.info("Вы вошли в метод deleteAdsById");
+    public ResponseEntity<?> removeAdById(@PathVariable("id") int id) {
+        log.info("Метод deleteAdsById, класса AdController. Принят: \n" +
+                "(int) id " + id);
         return ResponseEntity.ok().build();
     }
 
@@ -87,8 +99,11 @@ public class AdController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> updateAds(@PathVariable int id, @RequestBody CreateOrUpdateAd createOrUpdateAd) {
-        log.info("Вы вошли в метод updateAdsById");
+    public ResponseEntity<?> updateAds(@PathVariable int id,
+                                       @RequestBody CreateOrUpdateAd createOrUpdateAd) {
+        log.info("Метод addAds, класса AdController. Приняты: \n" +
+                "(int) id " + id +
+                "\nНовое объявление или обновление имеющегося " + createOrUpdateAd.toString());
         return ResponseEntity.ok().build();
     }
 
@@ -102,7 +117,7 @@ public class AdController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> getAdsMe() {
-        log.info("Вы вошли в метод getAdsCurrentUser");
+        log.info("Метод getAdsCurrentUser, класса AdController.");
         return ResponseEntity.ok().build();
     }
 
@@ -119,7 +134,9 @@ public class AdController {
     })
     public ResponseEntity<?> updateImage(@PathVariable("id") int id,
                                          @RequestPart(value = "image", required = true) MultipartFile image) {
-        log.info("Вы вошли в метод updateAdsImage");
+        log.info("Метод addAds, класса AdController. Приняты: \n" +
+                "(int) id " + id +
+                "\nИзображение объявления" + image.getOriginalFilename());
         return ResponseEntity.ok().build();
     }
 }

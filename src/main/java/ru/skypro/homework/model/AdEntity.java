@@ -29,5 +29,11 @@ public class AdEntity {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> commentsList;
 
+    @OneToOne
+    @JoinColumn(name = "ad_image_id", referencedColumnName = "imageId")
+    private ImageEntity imageEntity;
+
+
+
 
 }

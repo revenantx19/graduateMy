@@ -11,7 +11,7 @@ public class UserMapper {
     // Маппинг из Register в UserEntity
     public UserEntity toUserEntity(Register register) {
         if (register == null) {
-            return null;
+            throw new NullPointerException("Переданный объект register is null");
         }
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(register.getUsername());
@@ -27,7 +27,7 @@ public class UserMapper {
     // Маппинг из UserEntity в User DTO
     public User toUserDto(UserEntity userEntity) {
         if (userEntity == null) {
-            return null;
+            throw new NullPointerException("Переданный объект userUntuty is null");
         }
         User userDto = new User();
         userDto.setEmail(userEntity.getUsername()); //в dto называние поля email

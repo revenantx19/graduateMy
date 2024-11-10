@@ -8,12 +8,12 @@ import ru.skypro.homework.repository.UserRepository;
 
 @Service
 @Slf4j
-public class UserMapperServiceImpl {
+public class UserServiceImpl {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserMapperServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }

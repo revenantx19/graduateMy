@@ -2,6 +2,7 @@ package ru.skypro.homework.mapper;
 
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.ExtendedAd;
+import ru.skypro.homework.exception.EntityNotFoundException;
 import ru.skypro.homework.model.AdEntity;
 
 
@@ -9,7 +10,7 @@ public class AdMapper {
 
     public AdEntity toAdEntity(Ad ad) {
         if (ad == null) {
-            return null;
+            throw new EntityNotFoundException("Переданный объект Ad is null");
         }
         AdEntity adEntity = new AdEntity();
         adEntity.setAuthor(ad.getAuthor());
@@ -22,7 +23,7 @@ public class AdMapper {
 
     public Ad toAdDto(AdEntity adEntity) {
         if (adEntity == null) {
-            return null;
+            throw new EntityNotFoundException("Переданный объект AdEntity is null");
         }
         Ad ad = new Ad();
         ad.setAuthor(adEntity.getAuthor());

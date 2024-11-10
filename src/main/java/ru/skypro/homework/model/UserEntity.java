@@ -36,4 +36,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> commentsList;
 
+    @OneToOne
+    @JoinColumn(name = "user_image_id", referencedColumnName = "imageId")
+    private ImageEntity imageEntity;
+
+
 }
