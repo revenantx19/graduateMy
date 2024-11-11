@@ -1,25 +1,24 @@
 package ru.skypro.homework.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.RegisterReq;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.service.AuthService;
 
 @Service
+@Slf4j
 public class AuthServiceImpl implements AuthService {
-
     private final UserDetailsManager manager;
-
     private final PasswordEncoder encoder;
 
-    public AuthServiceImpl(UserDetailsManager manager) {
+    public AuthServiceImpl(UserDetailsManager manager,
+                           PasswordEncoder passwordEncoder) {
         this.manager = manager;
-        this.encoder = new BCryptPasswordEncoder();
+        this.encoder = passwordEncoder;
     }
 
     @Override
@@ -28,23 +27,23 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
         UserDetails userDetails = manager.loadUserByUsername(userName);
-        String encryptedPassword = userDetails.getPassword();
-        String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
-        return encoder.matches(password, encryptedPasswordWithoutEncryptionType);
+        return encoder.matches(password, userDetails.getPassword());
     }
 
     @Override
-    public boolean register(RegisterReq registerReq, Role role) {
-        if (manager.userExists(registerReq.getUsername())) {
+    public boolean register(Register register) {
+        if (manager.userExists(register.getUsername())) {
             return false;
         }
         manager.createUser(
-                User.withDefaultPasswordEncoder()
-                        .password(registerReq.getPassword())
-                        .username(registerReq.getUsername())
-                        .roles(role.name())
-                        .build()
-        );
+                User.builder()
+                        .passwordEncoder(this.encoder::encode)
+                        .password(register.getPassword())
+                        .username(register.getUsername())
+                        .roles(register.getRole().name())
+                        .build());
+        log.info("Информация о классе: " + register.getClass());
+        log.info("Пользователь создан.");
         return true;
     }
 }
