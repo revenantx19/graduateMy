@@ -10,13 +10,6 @@ import ru.skypro.homework.service.AdService;
 @Service
 public class AdServiceImpl implements AdService {
 
-    private final AdRepository adRepository;
-    private final UserDetailsManager manager;
-
-    public AdServiceImpl(AdRepository adRepository, UserDetailsManager manager) {
-        this.adRepository = adRepository;
-        this.manager = manager;
-    }
 
     public void addAd(CreateOrUpdateAd createAd) {
 

@@ -5,6 +5,6 @@ import ru.skypro.homework.model.UserEntity;
 
 public interface UserService {
 
-
+    void saveUserEntity(Register register);
 
 }

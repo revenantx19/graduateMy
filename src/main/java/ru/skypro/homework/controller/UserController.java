@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
@@ -27,8 +29,7 @@ import ru.skypro.homework.service.impl.UserServiceImpl;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserMapper userMapper;
-    private final UserServiceImpl userMapperServiceImpl;
+    private final UserServiceImpl userService;
 
     @Operation(summary = "Обновление пароля")
     @PostMapping(path = "/users/set_password")
@@ -40,11 +41,15 @@ public class UserController {
     public ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword newPassword) {
         log.info("Метод setPassword, класса UserController. Принят объект newPassword: " + newPassword.toString());
         if (newPassword != null) {
+            userService.setPassword(newPassword);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+
+
     @Operation(summary = "Получение информации об авторизованном пользователе")
     @GetMapping(path = "/users/me")
     @ApiResponses(value = {
@@ -54,11 +59,12 @@ public class UserController {
             }),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<User> getUser() {
+    public ResponseEntity<?> getUser() {
         log.info("Метод getUser, класса UserController.");
-        User user = userMapperServiceImpl.getUserDto();
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
+
+
 
     @Operation(summary = "Обновление информации об авторизованном пользователе")
     @PatchMapping(path = "/users/me")
@@ -74,6 +80,8 @@ public class UserController {
         return ResponseEntity.ok().build();
 
     }
+
+
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
     @PatchMapping(path = "/users/me/image", consumes = "multipart/form-data")
