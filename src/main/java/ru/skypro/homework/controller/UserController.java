@@ -11,14 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.dto.User;
-import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
@@ -38,10 +35,11 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword newPassword) {
-        log.info("Метод setPassword, класса UserController. Принят объект newPassword: " + newPassword.toString());
+    public ResponseEntity<NewPassword> setPassword(@RequestBody NewPassword newPassword,
+                                                   Authentication authentication) {
+        log.info("Вошли в метод setPassword, класса UserController. Принят объект newPassword: " + newPassword.toString());
         if (newPassword != null) {
-            userService.setPassword(newPassword);
+            userService.setPassword(newPassword, authentication.getName());
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -75,13 +73,13 @@ public class UserController {
             }),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUser updateUser) {
-        log.info("Метод updateUser, класса UserController. Принят объект updateUser: " + updateUser.toString());
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUser updateUser,
+                                        Authentication authentication) {
+        log.info("Вошли в метод updateUser контроллера UserController. Принят объект updateUser: " + updateUser);
+        userService.updateUser(updateUser, authentication.getName());
         return ResponseEntity.ok().build();
 
     }
-
-
 
     @Operation(summary = "Обновление аватара авторизованного пользователя")
     @PatchMapping(path = "/users/me/image", consumes = "multipart/form-data")
@@ -89,8 +87,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
-    public ResponseEntity<?> updateUserImage(@RequestPart(value = "image", required = true) MultipartFile image) {
-        log.info("Метод uploadUserImage, класса UserController. Принят файл image: " + image.toString());
+    public ResponseEntity<?> updateUserImage(@RequestPart(value = "image", required = true) MultipartFile image,
+                                             Authentication authentication) {
+        log.info("Вошли в метод uploadUserImage, класса UserController. Принят файл image: " + image.toString());
+        userService.updateUserImage(image, authentication.getName());
         return ResponseEntity.ok().build();
 
     }

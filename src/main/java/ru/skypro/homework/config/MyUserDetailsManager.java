@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.mapper.UserMapper;
@@ -17,12 +18,12 @@ public class MyUserDetailsManager implements UserDetailsManager {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
-        log.info("Получен пользователь из БД:" + user.getUsername() + " | " + user.getPassword());
-
+        log.info("Получен пользователь из БД: {} | {}", user.getUsername(), user.getPassword());
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
