@@ -3,6 +3,7 @@ package ru.skypro.homework.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.model.UserEntity;
 
 import javax.transaction.Transactional;
@@ -24,4 +25,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Transactional
     @Query(value = "UPDATE app_user SET first_name=:firstName, last_name=:lastName, phone=:phone WHERE username=:username", nativeQuery = true)
     void changeUserData(String firstName, String lastName, String phone, String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE app_user SET user_image_id =:imageEntity WHERE username=:username", nativeQuery = true)
+    void saveAvatar(ImageEntity imageEntity, String username);
+
 }

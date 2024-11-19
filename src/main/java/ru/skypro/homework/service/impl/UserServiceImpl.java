@@ -15,10 +15,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -82,9 +79,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserImage(MultipartFile image, String username) {
+    public void updateUserImage(MultipartFile image, String username) throws IOException {
         log.info("Вошли в метод updateUserImage сервиса UserServiceImpl " +
                 "получен объект: " + image.toString());
-        imageService.saveImage(image, username);
+        imageService.uploadImage(image, username);
     }
 }

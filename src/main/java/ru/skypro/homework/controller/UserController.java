@@ -19,6 +19,8 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
+import java.io.IOException;
+
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
 @Slf4j
@@ -88,7 +90,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> updateUserImage(@RequestPart(value = "image", required = true) MultipartFile image,
-                                             Authentication authentication) {
+                                             Authentication authentication) throws IOException {
         log.info("Вошли в метод uploadUserImage, класса UserController. Принят файл image: " + image.toString());
         userService.updateUserImage(image, authentication.getName());
         return ResponseEntity.ok().build();

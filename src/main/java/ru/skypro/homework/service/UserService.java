@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.model.UserEntity;
 
+import java.io.IOException;
+
 public interface UserService {
 
     void setPassword(NewPassword newPassword, String username);
@@ -12,5 +14,5 @@ public interface UserService {
 
     void updateUser(UpdateUser updateUser, String username);
 
-    void updateUserImage(MultipartFile image, String username);
+    void updateUserImage(MultipartFile image, String username) throws IOException;
 }
