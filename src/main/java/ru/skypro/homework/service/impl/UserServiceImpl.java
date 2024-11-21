@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.config.MyUserDetailsManager;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.model.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.ImageService;
@@ -83,5 +84,24 @@ public class UserServiceImpl implements UserService {
         log.info("Вошли в метод updateUserImage сервиса UserServiceImpl " +
                 "получен объект: " + image.toString());
         imageService.uploadImage(image, username);
+    }
+
+    @Override
+    public byte[] findAvatarImageByUserId(int id, String username) throws IOException {
+        log.info("Вошли в метод findAvatarImageByUserId сервиса UserServiceImpl " +
+                "\nполучен id (int): " + id +
+                "\nполучен username (String) " + username);
+        String filePath = userRepository.findImageByUsername(username);
+        log.info("Получен путь к файлу {}", filePath);
+        Path path = Path.of(filePath);
+        return Files.readAllBytes(path);
+        /*
+        byte[] avatarData = userRepository.findImageByUserId(id);
+        log.info("Получены данные изображения {}", avatarData);
+        ImageEntity imageEntity = userRepository.findImageEntityByUserId(id).getImageEntity();
+        log.info("Получена сущность изображения {}", imageEntity);
+        return avatarData;
+
+         */
     }
 }

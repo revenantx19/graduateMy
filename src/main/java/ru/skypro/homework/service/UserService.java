@@ -15,4 +15,6 @@ public interface UserService {
     void updateUser(UpdateUser updateUser, String username);
 
     void updateUserImage(MultipartFile image, String username) throws IOException;
+
+    byte[] findAvatarImageByUserId(int id, String username) throws IOException;
 }

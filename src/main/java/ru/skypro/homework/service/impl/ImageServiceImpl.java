@@ -91,7 +91,10 @@ public class ImageServiceImpl implements ImageService {
          * Картинка объявления - есть связь с ющером и сущностью объявления....
          */
         imageRepository.save(imageEntity);
+        //сохраняем сущность картинки в рамках связи @OneToOne
         userRepository.saveAvatar(imageEntity, username);
+
+        userRepository.saveAvatarPath(imageEntity.getFilePath(), username);
         log.info("Сущность картинки сохранена в БД");
         //return entity.getId();
     }
@@ -103,9 +106,8 @@ public class ImageServiceImpl implements ImageService {
 
         //Student student = studentRepository.findById(studentId)
         //.orElseThrow(() -> new RuntimeException("Студент с таким ID не найден"));
-
-
     }
+
 
 
 }

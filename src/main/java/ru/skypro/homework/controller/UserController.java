@@ -9,17 +9,23 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.model.ImageEntity;
 import ru.skypro.homework.model.UserEntity;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
@@ -29,6 +35,7 @@ import java.io.IOException;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final UserRepository userRepository;
 
     @Operation(summary = "Обновление пароля")
     @PostMapping(path = "/users/set_password")
@@ -95,6 +102,21 @@ public class UserController {
         userService.updateUserImage(image, authentication.getName());
         return ResponseEntity.ok().build();
 
+    }
+
+    @GetMapping(value = "/users/images/{id}",
+            produces = {MediaType.IMAGE_PNG_VALUE,
+                    MediaType.IMAGE_JPEG_VALUE,
+                    MediaType.IMAGE_GIF_VALUE, "image/*"})
+    public ResponseEntity<byte[]> getAvatarImageByUserId(@PathVariable int id,
+                                                         Authentication authentication) throws IOException {
+        log.info("Вошли в метод getAvatarImageByUsername, класса UserController.");
+        byte[] avatarData = userService.findAvatarImageByUserId(id, authentication.getName());
+        log.info("Вошли в метод getAvatarImageByUsername, класса UserController.+" +
+                "\nПолучен массив байт (ведем первый байт) {}", avatarData[0]);
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG) // Можно выбрать необходимый тип
+                .body(avatarData);
     }
 
 }

@@ -31,4 +31,17 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "UPDATE app_user SET user_image_id =:imageEntity WHERE username=:username", nativeQuery = true)
     void saveAvatar(ImageEntity imageEntity, String username);
 
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE app_user SET image =:filePath WHERE username=:username", nativeQuery = true)
+    void saveAvatarPath(String filePath, String username);
+
+    @Query(value = "SELECT ie.data FROM image_entity ie JOIN app_user au ON au.user_image_id = ie.image_id WHERE au.id = :id", nativeQuery = true)
+    byte[] findImageByUserId(int id);
+
+    @Query(value = "SELECT user_image_id FROM app_user WHERE username=:username", nativeQuery = true)
+    UserEntity findImageEntityByUsername(String username);
+
+    @Query(value = "SELECT image FROM app_user WHERE username=:username", nativeQuery = true)
+    String findImageByUsername(String username);
 }
