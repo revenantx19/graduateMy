@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class UpdateUser {
 
-
     @Schema(minLength = 3, maxLength = 10, description = "имя пользователя")
     private String firstName;
 

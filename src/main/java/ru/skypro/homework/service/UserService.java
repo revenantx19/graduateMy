@@ -10,11 +10,11 @@ public interface UserService {
 
     void setPassword(NewPassword newPassword, String username);
 
-    void getUser(UserEntity user);
+    User getUser(String username);
 
     void updateUser(UpdateUser updateUser, String username);
 
-    void updateUserImage(MultipartFile image, String username) throws IOException;
-
-    byte[] findAvatarImageByUserId(int id, String username) throws IOException;
+    void updateUserAvatar(MultipartFile image, String username) throws IOException;
+    String getExtension(MultipartFile file);
+    byte[] findAvatarImageByFilename(String fileName) throws IOException;
 }
