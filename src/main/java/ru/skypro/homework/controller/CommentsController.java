@@ -30,6 +30,7 @@ public class CommentsController {
     })
     public ResponseEntity<?> getComments(@PathVariable("id") int id) {
         log.info("Метод getComments, класса CommentsController. Принято id: " + id);
+
         return ResponseEntity.ok().build();
     }
 
