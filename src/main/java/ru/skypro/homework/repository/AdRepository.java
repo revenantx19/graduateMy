@@ -30,4 +30,9 @@ public interface AdRepository extends JpaRepository<AdEntity, Long> {
     @Transactional
     @Query(value = "UPDATE ad_entity SET image=:filePathString WHERE id=:id", nativeQuery = true)
     void saveNewAdImage(int id, String filePathString);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM ad_entity WHERE id=:id", nativeQuery = true)
+    void deleteAdById(int id);
 }

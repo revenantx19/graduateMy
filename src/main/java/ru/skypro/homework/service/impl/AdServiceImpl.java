@@ -32,6 +32,7 @@ public class AdServiceImpl implements AdService {
     private final AdMapper adMapper;
 
     public Ads getAllAds() {
+        log.info("Вошли в метод getAllAds сервиса AdServiceImpl");
         List<Ad> adsList = adRepository.findAll().stream()
                 .map(adEntity -> adMapper.toAdDto(adEntity))
                 .collect(Collectors.toList());
@@ -115,7 +116,12 @@ public class AdServiceImpl implements AdService {
 
     public void deleteAdById(int id) {
         log.info("Вошли в метод deleteById сервиса AdServiceImpl. Получен id (int): " + id);
-        adRepository.deleteById((long) id);
+        if (adRepository.existsAdById(id)) {
+            adRepository.deleteAdById(id);
+            log.info("Удаление выполнено успешно");
+        } else {
+            log.error("Удаление не выполнено, из-за отсутствия записи в таблице по id = " + id);
+        }
     }
 
     public Ad updateInfoAboutAd(int id, CreateOrUpdateAd createOrUpdateAd) {

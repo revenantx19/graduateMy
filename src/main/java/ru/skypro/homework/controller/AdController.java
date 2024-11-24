@@ -124,7 +124,7 @@ public class AdController {
     })
     public ResponseEntity<?> removeAdById(@PathVariable("id") int id,
                                           Authentication authentication) {
-        log.info("Метод deleteAdsById, класса AdController. Принят: \n" +
+        log.info("Метод removeAdsById, класса AdController. Принят: \n" +
                 "(int) id " + id);
         if (authentication.getName() == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -136,6 +136,13 @@ public class AdController {
         }
     }
 
+    /**
+     * Метод обновления информации о пользователе
+     * @param id объявления, в которое вносятся изменения
+     * @param createOrUpdateAd объект, содержащий новое название, цену и описание для объявления
+     * @param authentication объект, содержащий данные авторизованного пользователя
+     * @return объект Ad, содержащий объявление с изменениями
+     */
     @Operation(summary = "Обновление информации об объявлении", tags = {"Объявления"})
     @PatchMapping(path = "/ads/{id}")
     @ApiResponses(value = {
@@ -164,6 +171,11 @@ public class AdController {
         }
     }
 
+    /**
+     * Получение списка объявлений авторизованного пользователя
+     * @param authentication объект, содержащий информацию об авторизированном пользователе
+     * @return объект Ads содержащий количество объявлений и список объявлений
+     */
     @Operation(summary = "Получение объявлений авторизованного пользователя", tags = {"Объявления"})
     @GetMapping(path = "/ads/me")
     @ApiResponses(value = {
@@ -182,6 +194,14 @@ public class AdController {
         }
     }
 
+    /**
+     * Метод обновления картинки объявления
+     * @param id объявления
+     * @param image новое изображение
+     * @param authentication объект, содержащий информацию об авторизированном пользователе
+     * @return массив байт byte[] изображения
+     * @throws IOException
+     */
     @Operation(summary = "Обновление картинки объявления", tags = {"Объявления"})
     @PatchMapping(path = "/ads/{id}/image", consumes = "multipart/form-data")
     @ApiResponses(value = {
@@ -210,6 +230,12 @@ public class AdController {
         }
     }
 
+    /**
+     * Метод получающий имя изображения находящегося в каталоге /ad_images/
+     * @param fileName имя файла с расширением
+     * @return массив байт byte[] изображения хранящегося на диске
+     * @throws IOException
+     */
     @GetMapping(value = "/ad_images/{fileName}",
             produces = {MediaType.IMAGE_PNG_VALUE,
                     MediaType.IMAGE_JPEG_VALUE,
@@ -224,5 +250,4 @@ public class AdController {
                 .contentType(MediaType.IMAGE_GIF)
                 .body(adImageData);
     }
-
 }
