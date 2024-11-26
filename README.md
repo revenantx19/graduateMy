@@ -3,6 +3,7 @@
 Приложение подключается к Frontend используя Docker.
 
 В командной строке необходимо выполнить команду:
+
 docker run -p 3000:3000 --rm ghcr.io/dmitry-bizin/front-react-avito:v1.21
 
 Особенности
