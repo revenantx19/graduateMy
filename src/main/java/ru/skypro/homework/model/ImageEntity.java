@@ -20,6 +20,7 @@ public class ImageEntity {
     private String mediaType; //тип медиа (например, image/jpeg, image/png и т. д.).
 
     @Lob
+    @Column(name = "data")
     private byte[] data;
 
     @OneToOne(mappedBy = "imageEntity")

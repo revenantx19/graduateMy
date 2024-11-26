@@ -22,7 +22,6 @@ import ru.skypro.homework.service.impl.UserServiceImpl;
 public class AuthController {
 
     private final AuthService authService;
-    private final UserServiceImpl userMapperService;
 
     @PostMapping("/login")
     @ApiResponses(value = {
@@ -30,7 +29,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> login(@RequestBody Login login) {
-        log.info("Метод login, класса AuthController. Принят объект login: \n" + login.toString());
+        log.info("Вход в метод login, класса AuthController. Принят объект login: \n" + login.toString());
         if (authService.login(login.getUsername(), login.getPassword())) {
             log.info("Успешная авторизация");
             return ResponseEntity.ok().build();
@@ -46,9 +45,8 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content(mediaType = "")),
     })
     public ResponseEntity<?> register(@RequestBody Register register) {
-        log.info("Метод register, класса AuthController. Принят объект register: \n" + register.toString());
+        log.info("Вход в метод register, класса AuthController. Принят объект register: \n" + register.toString());
         if (authService.register(register)) {
-            userMapperService.saveUserEntity(register);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

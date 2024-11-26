@@ -27,14 +27,16 @@ public class UserMapper {
     // Маппинг из UserEntity в User DTO
     public User toUserDto(UserEntity userEntity) {
         if (userEntity == null) {
-            throw new NullPointerException("Переданный объект userUntuty is null");
+            throw new NullPointerException("Переданный объект userEntity is null");
         }
         User userDto = new User();
+        userDto.setId(userEntity.getId()); //передача id
         userDto.setEmail(userEntity.getUsername()); //в dto называние поля email
         userDto.setFirstName(userEntity.getFirstName()); //имя
         userDto.setLastName(userEntity.getLastName()); //фамилия
         userDto.setPhone(userEntity.getPhone()); //телефон
         userDto.setRole(userEntity.getRole()); //роль
+        userDto.setImage(userEntity.getImage()); //ссылка на изображение
 
         return userDto;
     }

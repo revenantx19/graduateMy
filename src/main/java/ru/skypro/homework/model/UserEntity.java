@@ -36,7 +36,17 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentEntity> commentsList;
 
-    @OneToOne
+    /**
+     * В данной связи с ImageEntity есть загвоздка с Spring Security
+     * насколько я понимаю на текущий момент, при автозагрузке пользователя
+     * спринг загружает и связный объект, но он ругается на размер
+     * якобы загружем слишком много данных и надо бы оптимизировать
+     * из-за этого нужно подключить (fetch = FetchType.LAZY)
+     * без него перестаёт работать адекватно авторизация,
+     * но пока я не проверил, что будет происходить если мы обратимся
+     * к данному связному объекту и он всё-таки загрузится
+     */
+    @OneToOne(fetch = FetchType.LAZY) //Spring Security не очень хочет, чтобы загрузка связных объектов была сразу
     @JoinColumn(name = "user_image_id", referencedColumnName = "imageId")
     private ImageEntity imageEntity;
 
